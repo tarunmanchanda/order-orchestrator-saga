@@ -1,0 +1,9 @@
+server:
+  port: 8080
+
+camel:
+  servlet:
+    mapping:
+      context-path: /api/*
+  springboot:
+    main-run-controller: true
