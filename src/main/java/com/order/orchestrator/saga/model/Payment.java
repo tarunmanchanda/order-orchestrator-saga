@@ -9,15 +9,9 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class LineItem {
+public class Payment {
 
-    private String firstName;
+    private String customerAccountNumber;
 
-    private String lastName;
-
-    private String confirmationNumber;
-
-    private String lengthOfStay;
-
-    private Double totalPrice;
+    private Double currentCardBalance;
 }

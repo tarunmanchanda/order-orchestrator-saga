@@ -1,6 +1,7 @@
 package com.order.orchestrator.saga.routes;
 
 import com.order.orchestrator.saga.model.Order;
+import org.apache.camel.Exchange;
 import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.model.rest.RestBindingMode;
 import org.springframework.stereotype.Component;
@@ -19,6 +20,12 @@ public class OrderRoutes extends RouteBuilder {
                 .apiProperty("api.title", "Saga Order Orchestrator")
                 .apiProperty("api.version", "1.0");
 
+        onException(Exception.class)
+                .handled(true)
+                .setHeader(Exchange.HTTP_RESPONSE_CODE, constant(400))
+                .setHeader(Exchange.CONTENT_TYPE, constant("text/json"))
+                .setBody().simple("${exception.message}");
+
         rest().consumes("application/json").produces("application/json")
                 .post("/v1/orders")
                 .responseMessage("201", "Order Created")
@@ -26,7 +33,6 @@ public class OrderRoutes extends RouteBuilder {
                 .type(Order.class)
                 .param().name("body").type(body).description("Order Payload")
                 .endParam()
-                .to("direct:createOrder")
-                .outType(Order.class);
+                .to("direct:createOrder");
     }
 }

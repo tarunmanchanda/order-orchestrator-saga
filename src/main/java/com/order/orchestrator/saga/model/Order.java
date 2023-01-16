@@ -18,5 +18,7 @@ public class Order {
     private String orderStatus;
 
     private LineItem lineItem;
+
+    private Payment payment;
 }
 
