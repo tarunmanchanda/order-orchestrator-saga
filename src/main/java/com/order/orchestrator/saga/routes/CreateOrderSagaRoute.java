@@ -5,6 +5,7 @@ import com.order.orchestrator.saga.model.OrderStatus;
 import com.order.orchestrator.saga.service.CreateOrderService;
 import com.order.orchestrator.saga.service.PaymentService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.camel.LoggingLevel;
 import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.model.SagaPropagation;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.UUID;
 
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class CreateOrderSagaRoute extends RouteBuilder {
@@ -20,6 +22,9 @@ public class CreateOrderSagaRoute extends RouteBuilder {
     private final CreateOrderService createOrderService;
 
     private final PaymentService paymentService;
+
+//    @Autowired
+//    private CamelReactiveStreamsService camel;
 
     @Override
     public void configure() throws Exception {
@@ -37,7 +42,6 @@ public class CreateOrderSagaRoute extends RouteBuilder {
                 .saga()
                 .to("direct:holdPayment")
                 .to("direct:makeReservation");
-                //.to("direct:saveReservation");
 
         from("direct:holdPayment")
                 .saga()
@@ -69,12 +73,18 @@ public class CreateOrderSagaRoute extends RouteBuilder {
                 .log("ID: ${header.id}, Reservation cancelled ${body}");
 
 
-        from("direct:saveReservation")
-                .saga()
-                .propagation(SagaPropagation.MANDATORY)
-                .option("id", header("id"))
-                .setBody(body())
-                .compensation("direct:updateReservation")
-                .bean(createOrderService, "saveReservationToDB");
+        from("direct:getOrders")
+                .bean(createOrderService, "getAllOrders");
     }
+
+//    public Mono<ServerResponse> getAllOrders(ServerRequest serverRequest) {
+//        Publisher<Order> orders = camel.to("direct:getOrders", null, Order.class);
+//        return ServerResponse.ok().body(orders, Order.class);
+//    }
+//
+//    public Mono<ServerResponse> createOrder(ServerRequest serverRequest) {
+//        Publisher<Order> orderPublisher = camel.to("direct:createOrder", serverRequest, Order.class);
+//        return ServerResponse.ok().body(orderPublisher, Order.class);
+//    }
+
 }

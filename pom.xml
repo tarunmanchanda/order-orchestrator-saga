@@ -75,6 +75,16 @@
 			<artifactId>camel-jackson</artifactId>
 			<version>${camel.version}</version>
 		</dependency>
+		<!--		<dependency>-->
+		<!--			<groupId>org.springframework.boot</groupId>-->
+		<!--			<artifactId>spring-boot-starter-webflux</artifactId>-->
+		<!--			<version>2.6.4</version>-->
+		<!--		</dependency>-->
+		<dependency>
+			<groupId>org.apache.camel.springboot</groupId>
+			<artifactId>camel-reactive-streams-starter</artifactId>
+			<version>3.20.1</version>
+		</dependency>
 
 		<!--	For Java8 LocalDateTime support	-->
 		<dependency>

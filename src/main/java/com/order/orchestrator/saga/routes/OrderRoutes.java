@@ -34,5 +34,13 @@ public class OrderRoutes extends RouteBuilder {
                 .param().name("body").type(body).description("Order Payload")
                 .endParam()
                 .to("direct:createOrder");
+
+
+        rest().produces("application/json")
+                .get("/v1/orders")
+                .responseMessage("200", "Retrieve All Orders")
+                .description("Retrieve All Orders")
+                .type(Order.class)
+                .to("direct:getOrders");
     }
 }

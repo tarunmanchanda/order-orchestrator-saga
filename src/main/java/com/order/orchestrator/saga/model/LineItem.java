@@ -17,7 +17,7 @@ public class LineItem {
 
     private String confirmationNumber;
 
-    private String lengthOfStay;
+    private int lengthOfStay;
 
     private Double totalPrice;
 }
