@@ -19,7 +19,6 @@ public class OrderRepository {
     }
 
     public List<Order> getAllOrders() {
-        cacheMap.put(UUID.randomUUID(), Order.builder().orderStatus("confirmed").build());
         return new ArrayList<>(cacheMap.values());
     }
 }
